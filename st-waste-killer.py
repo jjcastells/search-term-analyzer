@@ -17,6 +17,12 @@ st.caption(
 )
 
 DEFAULT_MIN_CLICKS = 50
+if "ran" not in st.session_state:
+    st.session_state.ran = False
+if "grp" not in st.session_state:
+    st.session_state.grp = None
+if "min_clicks" not in st.session_state:
+    st.session_state.min_clicks = DEFAULT_MIN_CLICKS
 
 # =====================
 # Helpers (tu stack)
@@ -194,9 +200,10 @@ with c1:
     min_clicks = st.number_input(
         "Mínimo de clics (evidencia)",
         min_value=1, max_value=100000,
-        value=int(DEFAULT_MIN_CLICKS),
+        value=int(st.session_state.min_clicks),
         step=5
     )
+st.session_state.min_clicks = int(min_clicks)
 
 run = st.button("🚀 Detectar desperdicio", use_container_width=True)
 if not run:
