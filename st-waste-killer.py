@@ -213,7 +213,7 @@ df_out = df[mask].copy()
 grp = df_out.groupby("Search Term", dropna=False)[["Clicks", "Purchases", "Sales", "Spend"]].sum().reset_index()
 
 # Añadimos “motivo” + recomendación
-grp["Recomendación"] = f"Considerar como negativa ({neg_match})"
+grp["Recomendación"] = "Revisar para negativa (manual)"
 grp["Motivo"] = grp["Clicks"].astype(int).astype(str) + f"+ clics y 0 compras"
 
 # Orden por Clicks desc (tu foco CR) y luego por Spend desc
