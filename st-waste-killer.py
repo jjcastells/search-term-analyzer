@@ -206,7 +206,9 @@ with c1:
 st.session_state.min_clicks = int(min_clicks)
 
 run = st.button("🚀 Detectar desperdicio", use_container_width=True)
-if not run:
+if run:
+    st.session_state.ran = True
+if not st.session_state.ran:
     st.stop()
 
 # =====================
@@ -225,12 +227,17 @@ grp["Motivo"] = grp["Clicks"].astype(int).astype(str) + f"+ clics y 0 compras"
 
 # Orden por Clicks desc (tu foco CR) y luego por Spend desc
 grp = grp.sort_values(["Clicks", "Spend"], ascending=[False, False])
+st.session_state.grp = grp
 
 # =====================
 # Resumen
 # =====================
 st.divider()
 st.subheader("✅ Resultados")
+
+grp = st.session_state.grp
+if grp is None:
+    st.stop()
 
 k1, k2, k3 = st.columns(3)
 k1.metric("Términos detectados", f"{len(grp)}")
