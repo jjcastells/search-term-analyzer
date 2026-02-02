@@ -239,21 +239,25 @@ st.caption(
 )
 
 # =====================
-# Export informativo (CSV)
+# Export informativo (XLSX)
 # =====================
 st.divider()
-st.subheader("💾 Export (CSV informativo)")
+st.subheader("💾 Export (XLSX informativo)")
 
 export_df = grp[show_cols].copy()
 export_df["Clicks"] = export_df["Clicks"].astype(int)
 
-csv_bytes = export_df.to_csv(index=False).encode("utf-8")
+output = BytesIO()
+sheet_name = sanitize_sheet_name(f"WASTE {datetime.now().strftime('%d-%m-%Y')}")
+
+with pd.ExcelWriter(output, engine="openpyxl") as writer:
+    export_df.to_excel(writer, index=False, sheet_name=sheet_name)
 
 st.download_button(
-    label="⬇️ Descargar SearchTerm_Waste.csv",
-    data=csv_bytes,
-    file_name=f"SearchTerm_Waste_{datetime.now().strftime('%Y-%m-%d')}.csv",
-    mime="text/csv",
+    label="⬇️ Descargar SearchTerm_Waste.xlsx",
+    data=output.getvalue(),
+    file_name=f"SearchTerm_Waste_{datetime.now().strftime('%Y-%m-%d')}.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 )
 
 # Extra: copiar términos (para pegar rápido)
