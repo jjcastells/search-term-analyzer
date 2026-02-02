@@ -198,15 +198,6 @@ with c1:
         step=5
     )
 
-with c2:
-    neg_match = st.radio(
-        "Recomendación de match type",
-        options=["Negative Exact", "Negative Phrase"],
-        index=0,
-        horizontal=True,
-        help="Esto es una recomendación para aplicar manualmente. Este lead magnet no crea bulksheets."
-    )
-
 run = st.button("🚀 Detectar desperdicio", use_container_width=True)
 if not run:
     st.stop()
@@ -234,11 +225,10 @@ grp = grp.sort_values(["Clicks", "Spend"], ascending=[False, False])
 st.divider()
 st.subheader("✅ Resultados")
 
-k1, k2, k3, k4 = st.columns(4)
+k1, k2, k3 = st.columns(3)
 k1.metric("Términos detectados", f"{len(grp)}")
 k2.metric("Clicks (detectados)", f"{int(grp['Clicks'].sum())}")
 k3.metric("Spend (detectado)", f"{grp['Spend'].sum():,.2f} €")
-k4.metric("Match type sugerido", neg_match)
 
 show_cols = ["Search Term", "Clicks", "Spend", "Sales", "Motivo", "Recomendación"]
 st.dataframe(grp[show_cols].head(300), use_container_width=True)
